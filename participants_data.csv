@@ -1,0 +1,21 @@
+Participant Code,Age,Gender,Height (approx. in cm),Weight (approx. in Kg),Ethnicity 1,Ethniciy 2,Dominant Arm,Data comments
+P1,27,Woman,154,50,Asian,,Right,
+P10,25,Man,182,86,Asian,,Right,
+P11,25,Man,180,70,Asian,,Right,
+P12,29,Man,170,73,Middle Eastern or Northern African,,Right,
+P13,24,Man,180,65,White,,Right,
+P14,24,Man,178,64,White,,Right,
+P15,25,Man,183,83,Asian,Middle Eastern or Northern African,Ambidextrous-right,
+P16,27,Man,174,79,Latina or Latino,,Right,
+P17,35,Woman,163,50,Middle Eastern or Northern African,,Right,
+P18,31,Prefer not to say,164,58,Prefer not to say,,Right,
+P19,22,Woman,168,55,Asian,Indian,Right,
+P2,32,Woman,163,59,Middle Eastern or Northern African,Asian,Right,
+P20,23,Woman,164,49,Middle Eastern or Northern African,,Right,
+P3,23,Man,179,63,White,,Right,
+P4,28,Man,174,72,White,,Right,
+P5,30,Man,177,84,White,,Right,b/c switched
+P6,34,Man,178,75,Middle Eastern or Northern African,,Right,b/c switched
+P7,25,Man,170,65,Asian,,Right,b/c switched
+P8,32,Man,184,88,Middle Eastern or Northern African,,Right,b/c switched
+P9,30,Man,182,82,Middle Eastern or Northern African,,Right,wrote something different by hand
