@@ -21,9 +21,14 @@ def convert_csv(input_csv_path):
     # Read the CSV file
     df = pd.read_csv(input_csv_path)
 
-    # Convert the "Time (s)" column to seconds
-    df['Time (s)'] = df['Time (s)'].apply(lambda x: float(x) * 1000)  # Convert to milliseconds
+    # Convert the "Time (s)" column to milliseconds
+    df['Time (ms)'] = df['Time (s)'].apply(lambda x: float(x) * 1000)  # Convert to milliseconds
+    #Delete the duplicated Time column
+    df.drop(columns=['Time (s)'], inplace=True)
 
+    # Reorder the columns with 'Time (ms)' as the first column
+    df = df[['Time (ms)'] + [col for col in df.columns if col != 'Time (ms)']]
+            
     # Save the modified data to a new CSV file
     output_csv_path = os.path.join(os.path.dirname(input_csv_path), 'converted_data.csv')
     df.to_csv(output_csv_path, index=False)
@@ -31,7 +36,14 @@ def convert_csv(input_csv_path):
     print(f"Conversion completed for {input_csv_path}. Results saved to 'converted_data.csv'")
 
 # Define the folders containing raw data for left and right pockets
-pockets_folders = ['p1-left-pocket', 'p1-right-pocket']
+# pockets_folders = ['p1-left-pocket', 'p1-right-pocket']
+    
+pockets_folders = []
+
+# Generate elements for 20 participants with left and right pockets
+for i in range(1, 21):
+    pockets_folders.append(f'p{i}-left-pocket')
+    pockets_folders.append(f'p{i}-right-pocket')
 
 for pocket_folder in pockets_folders:
     pocket_path = os.path.join('phyphox-ios', 'raw-data', pocket_folder)
@@ -43,3 +55,4 @@ for pocket_folder in pockets_folders:
                 convert_csv(input_csv_path)
             else:
                 print(f"Skipping {input_csv_path}. Already converted.")
+

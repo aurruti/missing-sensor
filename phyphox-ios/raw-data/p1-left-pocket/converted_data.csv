@@ -1,4 +1,4 @@
-Time (s),Linear Acceleration x (m/s^2),Linear Acceleration y (m/s^2),Linear Acceleration z (m/s^2),Absolute acceleration (m/s^2)
+Time (ms),Linear Acceleration x (m/s^2),Linear Acceleration y (m/s^2),Linear Acceleration z (m/s^2),Absolute acceleration (m/s^2)
 9.040541947,0.2122568518,-0.1034894313,-0.5965855658,0.6416208934
 19.02854163,0.199339183,-0.03101947904,-0.145292784,0.2486127733
 29.016541779999997,0.03604340672,-0.04548315167,0.3518901157,0.3566433762
