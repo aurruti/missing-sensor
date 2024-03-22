@@ -9,8 +9,6 @@ def classify_data(input_csv_path, p_timestamp1, p_timestamp2, p_timestamp3):
     # Read the timestamp CSV file
     # timestamp_df = pd.read_csv('./timestamps.csv')
 
-    
-
     # Define time intervals for each activity
     start_standup = p_timestamp3 + 60
     start_walk = start_standup + 30
@@ -47,9 +45,7 @@ def classify_data(input_csv_path, p_timestamp1, p_timestamp2, p_timestamp3):
     # Create a new column 'Label' and classify the data based on time intervals
     df['Labels'] = pd.cut(df['Time (s)'], bins=bin_edges, labels=labels)
 
-
     return df
-
 
 def loop_data_folders(data_folders, timestamps_df):
     for data_folder in data_folders:

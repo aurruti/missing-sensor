@@ -6,7 +6,7 @@ def convert_csv(input_csv_path):
     # Read the CSV file
     df = pd.read_csv(input_csv_path)
 
-    # Convert the "Time (s)" column to milliseconds
+    # Convert the "Time (s)" column to seconds format
     df['Time (s)'] = df['Time (s)'].apply(lambda x: float(x))  # Convert to seconds
     #Delete the duplicated Time column
     # df.drop(columns=['Time (s)'], inplace=True)
