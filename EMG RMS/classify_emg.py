@@ -1,31 +1,16 @@
+import os
 import pandas as pd
+import time
 
-def excel_to_df_ms(path, columns = ['Time (s)', 'a: EMG RMS 1-1', 'Time (s)', 'a: EMG RMS 1-2', 'Time (s)', 'a: EMG RMS 1-3', 'Time (s)', 'a: EMG RMS 1-4']):
-    """""
-    For a given excel file; the function will return a dataframe with time in milliseconds.
-    Input:
-        path: str, path to the excel file
-        columns: list, column names of the dataframe (by default it takes the names of the columns of a EMG report file)
-    Returns:
-        df: pd.DataFrame, dataframe with time in milliseconds
-    """""
-    # Read the Excel file
-    df = pd.read_excel(path)
-    # Convert time columns to milliseconds
-    df.columns = columns
-    df['Time (ms)'] = df['Time (s)'].apply(lambda x: float(x.replace(',', '.')) * 1000)
-    df.drop(columns=['Time (s)'], inplace=True)
-    return df
-
-def save_to_csv_by_time_interval(df, start_time, end_time, output_file, time_column = 'Time (ms)'):
+def save_to_csv_by_time_interval(df, start_time, end_time, output_file, time_column = 'X[s]'):
     """""
     Export a time interval of a given dataframe to a CSV file.
     Input:
-        df: pd.DataFrame, dataframe with time in milliseconds
-        start_time: int, start time of the interval in milliseconds
-        end_time: int, end time in milliseconds
+        df: pd.DataFrame, dataframe
+        start_time: int, start time with the same time unit the dataframe has
+        end_time: int, end time with the same time unit the dataframe has
         output_file: str, name of the output file
-        time_column: str, name of the time column (by default Time (ms))
+        time_column: str, name of the time column (by default X[s])
     Returns:
         None
     """""
@@ -40,33 +25,38 @@ def emg_test_classification(input_path, output_dir, start_write_by_hand, start_w
     Input:
         input_path: str, path to the .xlsx file with the raw data.
         output_dir: str, path to the output directory
-        start_write_by_hand: int, start time of the write by hand activity in milliseconds
-        start_write_on_pc: int, start time of the write on PC activity in milliseconds
-        start_standardized_times: int, start time of the standardized times activity in milliseconds
+        start_write_by_hand: int, start time of the write by hand activity in seconds
+        start_write_on_pc: int, start time of the write on PC activity in seconds
+        start_standardized_times: int, start time of the standardized times activity in seconds
     Returns:
         None
     """""
-    df = excel_to_df_ms(input_path)
+    if not os.path.exists(input_path):
+        raise Exception(f'The input file {input_path} does not exist. Please check the path and try again.')
+    if not os.path.exists(participant_output_dir):
+        raise Exception(f'The output directory {participant_output_dir} does not exist. Please create it before running the function.')
+    df = pd.read_excel(input_path)
+
 
     # Time definitions
-    start_standup = start_standardized_times + 60000
-    start_walk = start_standup + 30000
-    start_jog = start_walk + 30000
-    start_rest = start_jog + 30000
-    start_squat  = start_rest + 30000
-    start_clap  = start_squat + 15000
-    start_msrc12_1 = start_clap + 10000
-    start_msrc12_2 = start_msrc12_1 + 15000
-    start_msrc12_3 = start_msrc12_2 + 15000
-    start_msrc12_4 = start_msrc12_3 + 15000
-    start_msrc12_5 = start_msrc12_4 + 15000
-    start_msrc12_6 = start_msrc12_5 + 15000
-    start_msrc12_7 = start_msrc12_6 + 15000
-    start_msrc12_8 = start_msrc12_7 + 15000
-    start_msrc12_9 = start_msrc12_8 + 15000
-    start_msrc12_10 = start_msrc12_9 + 15000
-    start_msrc12_11 = start_msrc12_10 + 15000
-    start_msrc12_12 = start_msrc12_11 + 15000
+    start_standup = start_standardized_times + 60
+    start_walk = start_standup + 30
+    start_jog = start_walk + 30
+    start_rest = start_jog + 30
+    start_squat  = start_rest + 30
+    start_clap  = start_squat + 15
+    start_msrc12_1 = start_clap + 10
+    start_msrc12_2 = start_msrc12_1 + 15
+    start_msrc12_3 = start_msrc12_2 + 15
+    start_msrc12_4 = start_msrc12_3 + 15
+    start_msrc12_5 = start_msrc12_4 + 15
+    start_msrc12_6 = start_msrc12_5 + 15
+    start_msrc12_7 = start_msrc12_6 + 15
+    start_msrc12_8 = start_msrc12_7 + 15
+    start_msrc12_9 = start_msrc12_8 + 15
+    start_msrc12_10 = start_msrc12_9 + 15
+    start_msrc12_11 = start_msrc12_10 + 15
+    start_msrc12_12 = start_msrc12_11 + 15
 
     save_to_csv_by_time_interval(df, start_write_by_hand, start_write_on_pc, output_dir + '/write_by_hand.csv')
     save_to_csv_by_time_interval(df, start_write_on_pc, start_standardized_times, output_dir + '/write_on_pc.csv')
@@ -88,12 +78,47 @@ def emg_test_classification(input_path, output_dir, start_write_by_hand, start_w
     save_to_csv_by_time_interval(df, start_msrc12_9, start_msrc12_10, output_dir + '/msrc12_9.csv')
     save_to_csv_by_time_interval(df, start_msrc12_10, start_msrc12_11, output_dir + '/msrc12_10.csv')
     save_to_csv_by_time_interval(df, start_msrc12_11, start_msrc12_12, output_dir + '/msrc12_11.csv')
-    save_to_csv_by_time_interval(df, start_msrc12_12, start_msrc12_12 + 15000, output_dir + '/msrc12_12.csv')
+    save_to_csv_by_time_interval(df, start_msrc12_12, start_msrc12_12 + 15, output_dir + '/msrc12_12.csv')
 
     return None
 
 if __name__ == '__main__':
-    ## TO-DO:
-    ## Scrutinize EMG raw data files for the starting times of the activites
-    ## Call emg_tes_classification function accordingly for the 20 data files.
-    raise NotImplementedError
+    participants_path = 'participants_data.csv'
+    timestamps_path = 'timestamps.csv'
+    raw_data_dir = "raw_data"
+    output_data_dir = "by_activity_data"
+    terminal_print = True
+
+    # Path definitions
+    self_path = os.path.realpath(__file__)
+    participants_path = self_path.replace('EMG RMS\\classify_emg.py', participants_path)
+    timestamps_path = self_path.replace('EMG RMS\\classify_emg.py', timestamps_path)
+    participants_df = pd.read_csv(participants_path)
+    timestamps_df = pd.read_csv(timestamps_path)
+
+    if terminal_print:
+        start_time = time.time()
+        participant_completed = 0
+    # Data processing loop
+    for participant in participants_df["Participant Code"]:
+        if terminal_print:
+            elapsed_time = time.time() - start_time
+            expected_remaining_time = elapsed_time * (len(participants_df["Participant Code"]) - participant_completed)
+            print(f'[Elapsed time {elapsed_time:.0f} seconds; expected remaining time {expected_remaining_time:.0f} seconds] Processing participant {participant}...', end='\r')
+            participant_completed += 1
+        
+        p_timestamp1 = timestamps_df[timestamps_df["Participant Code"] == participant]["Timestamp 1 (s)"].values[0]
+        p_timestamp2 = timestamps_df[timestamps_df["Participant Code"] == participant]["Timestamp 2 (s)"].values[0]
+        p_timestamp3 = timestamps_df[timestamps_df["Participant Code"] == participant]["Timestamp 3 (s)"].values[0]
+        participant_raw_data_path = self_path.replace("classify_emg.py", "\\" + raw_data_dir + "\\" + participant + ".xlsx")
+        participant_output_dir = self_path.replace("classify_emg.py", "\\" + output_data_dir + "\\" + participant)
+
+        # Create output directory
+        if not os.path.exists(participant_output_dir):
+            os.makedirs(participant_output_dir)
+
+        emg_test_classification(participant_raw_data_path, participant_output_dir, p_timestamp1, p_timestamp2, p_timestamp3)
+    if terminal_print:
+        print(f'Took {time.time() - start_time:.0f} seconds to process {len(participants_df["Participant Code"]+1)} participants.             ',end='\n')
+        print('Processing finished!' + "Processed files are now available in " + output_data_dir + " directory.")
+
