@@ -1,4 +1,5 @@
 # Data Collection Description
+For a full description with methodology, results, and discussion; please see PDF report in the repository or, alternatively, in https://tinyurl.com/y5pt3u7w.
 
 ## Collection Method
 The dataset contains data from accelerometers, EMG sensors, and ECG sensors.
